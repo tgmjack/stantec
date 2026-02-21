@@ -1,0 +1,32 @@
+
+to do 
+
+1) get git repo up 
+
+2) get website working propper through domain 
+
+3) get db working 
+
+4) get to get data from db
+
+
+
+
+
+
+
+
+
+
+1)
+
+key from ec2 for GitHub repo (delete once set up )
+
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP7p7RvjGpX+4UVa/jRf9J6/ozYZXifBvWM884XhmApJ stantec Deploy Key
+
+2) connect with 
+
+ssh -i "C:\Users\jack\Downloads\stantec_tech_test_key.pem" ec2-user@ec2-34-251-63-62.eu-west-1.compute.amazonaws.com
+
+3)
+
