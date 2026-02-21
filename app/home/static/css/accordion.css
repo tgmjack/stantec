@@ -1,0 +1,30 @@
+.accordion {
+  background-color: #f9fafb;
+  color: #444;
+  cursor: pointer;
+  padding: 8px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 13px;
+  transition: 0.4s;
+}
+
+.active, .accordion:hover {
+  background-color: #ccc;
+}
+
+.panel {
+  padding-left: 48px;
+
+  background-color: white;
+  max-height: 0;
+  font-size: 13px;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+.panel_text{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
