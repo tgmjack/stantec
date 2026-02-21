@@ -25,7 +25,7 @@ SECRET_KEY = 'mi_secret_init_m8'
 TESTING = True
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["stantec.tgm-test.com" , "localhost" , "127.0.0.1"]
 
 
 # Application definition
