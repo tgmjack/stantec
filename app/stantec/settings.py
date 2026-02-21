@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-SECRET_KEY = 'django-insecure-*vspqq)t65r12eu$*g#vd0)qrkc6p&m+)=ra$_w$bulkv=iycg'
+SECRET_KEY = 'mi_secret_init_m8'
 
 
 TESTING = True
