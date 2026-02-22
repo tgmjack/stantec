@@ -25,20 +25,20 @@ services:
     environment:
       - DOMAIN=${DOMAIN}
 
-  certbot:
-    build:
-      context: ./docker/certbot
-    command: echo "Skipping..."
-    environment:
-      - EMAIL=${ACME_DEFAULT_EMAIL}
-      - DOMAIN=${DOMAIN}
-    volumes:
-      - certbot-web:/vol/www
-      - certbot-certs:/etc/letsencrypt/
-    depends_on:
-      - proxy
+#  certbot:
+#    build:
+#      context: ./docker/certbot
+#    command: echo "Skipping..."
+#    environment:
+#      - EMAIL=${ACME_DEFAULT_EMAIL}
+#      - DOMAIN=${DOMAIN}
+#    volumes:
+#      - certbot-web:/vol/www
+#      - certbot-certs:/etc/letsencrypt/
+#    depends_on:
+#      - proxy
 
 volumes:
   certbot-web:
   proxy-dhparams:
-  certbot-certs:
+#  certbot-certs:
