@@ -1,17 +1,20 @@
 from django.shortcuts import render
 from stantec import settings as stg
+from pathlib import Path
 # Create your views here.
 
 
 
 def use_local_data():
     import pandas as pd
-    df = pd.read_excel('home/static/data.xlsx')
+    data_file = Path(stg.BASE_DIR) / 'home' / 'static' / 'Data.xlsx'
+    df = pd.read_excel(data_file)
     return df.columns, df.values.tolist()
 
 def get_data_from_local_sqlite_db():
     import sqlite3
-    conn = sqlite3.connect('home/data.db')
+    sqlite_file = Path(stg.BASE_DIR) / 'home' / 'data.db'
+    conn = sqlite3.connect(sqlite_file)
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM data')
     rows = cursor.fetchall()
