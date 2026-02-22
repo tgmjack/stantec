@@ -19,38 +19,50 @@
 
         {% include "home/side_bar.html" %}  
 
-        <div class="main-content p-4 sm:ml-64">
-            <div id = "border_around_all_main_stuff" class = "p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-                <div id="controls" class="mb-3 d-flex gap-4 align-items-center">
-                    <div class="form-check form-check-inline mb-0">
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            name="table_type"
-                            id="table_from_scratch_radio"
-                            value="table_from_scratch_wrapper"
-                            checked
-                        >
-                        <label class="form-check-label" for="table_from_scratch_radio">Table from scratch</label>
-                    </div>
+        <div class="main-content" style="margin-left: 15%;">
+            <h1 class="text-center mt-4 mb-4"> RainFall Report </h1>
+        </div>
 
-                    <div class="form-check form-check-inline mb-0">
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            name="table_type"
-                            id="ag_grid_table_radio"
-                            value="AG_Grid_table_wrapper"
-                        >
-                        <label class="form-check-label" for="ag_grid_table_radio">AG Grid Table</label>
+        <div class="main-content" style="margin-left: 15%; padding: 2%; width: 85%; box-sizing: border-box;">
+            <div id = "border_around_all_main_stuff" class = "p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+
+                <div class="row" id="first_display_row"> 
+
+                    <div id="table_and_map_wrapper" style="display: flex; gap: 16px; align-items: stretch;">
+                        <div id="table_Wrapper" style="height: 60vh; width: 60%;">
+                            <div id="table" class="ag-theme-alpine" style="height: 100%; width: 100%;"></div>
+                        </div>
+
+                        <div id="map_Wrapper" style="height: 60vh; width: 40%;">
+                            <div class="embed-map-fixed" style="position: relative; width: 100%; height: 100%;">
+                                <div class="embed-map-container" style="overflow: hidden; background: none !important; width: 100%; height: 100%;">
+                                    <iframe
+                                        id="location-map-frame"
+                                        class="embed-map-frame"
+                                        frameborder="0"
+                                        scrolling="no"
+                                        marginheight="0"
+                                        marginwidth="0"
+                                        style="width: 100%; height: 100%;"
+                                        src="https://maps.google.com/maps?width=600&height=400&hl=en&q={{ default_latitude }}%2C{{ default_longitude }}&t=&z=14&ie=UTF8&iwloc=B&output=embed"
+                                    ></iframe>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                    
-                <div id="table" class="ag-theme-alpine" style="height: 600px; width: 100%;"></div>
+                <div class="row" id="second_display_row"> 
 
+                    <canvas id="plot_graph" style="display: none; width: 100%; height: 320px; margin-top: 16px;"></canvas>
+
+                </div>
 
             </div>
+
+
+
+
         </div>
 
 
@@ -61,14 +73,152 @@
 
     {{ cell_data|json_script:"row-data" }}
     {{ columns|json_script:"columns-data" }}
+    {{ latitude_and_longitude|json_script:"latitude-and-longitude-data" }}
 
     <script>
 
             const myGridElement = document.querySelector('#table');
+            const mapFrameElement = document.getElementById('location-map-frame');
+            const plotGraphCanvas = document.getElementById('plot_graph');
 
             const rowData = JSON.parse(document.getElementById('row-data').textContent);
             const columns = JSON.parse(document.getElementById('columns-data').textContent);
-            const columnDefs = columns.map((column) => ({ field: column }));
+            let rainfallChart = null;
+            const latitudeAndLongitudeElement = document.getElementById('latitude-and-longitude-data');
+            const latitudeAndLongitude = latitudeAndLongitudeElement
+                ? JSON.parse(latitudeAndLongitudeElement.textContent)
+                : {};
+            const locationLookup = Object.entries(latitudeAndLongitude).reduce((accumulator, [key, value]) => {
+                accumulator[key.toLowerCase()] = value;
+                return accumulator;
+            }, {});
+            const columnDefs = columns.map((column) => {
+                const isLocationColumn = column.toLowerCase() === 'location';
+                const isRainfallColumn = column.toLowerCase() === 'rainfall';
+                if (isLocationColumn) {
+                    return {
+                        field: column,
+                        cellStyle: { color: '#0d6efd', textDecoration: 'underline', cursor: 'pointer' }
+                    };
+                }
+
+                if (isRainfallColumn) {
+                    return {
+                        field: column,
+                        maxWidth: 192
+                    };
+                }
+
+                return { field: column };
+            });
+
+            console.log("latitude_and_longitude", latitudeAndLongitude);
+
+            function renderRainfallChart(rowsToPlot = rowData) {
+                if (!plotGraphCanvas || typeof Chart === 'undefined') {
+                    return;
+                }
+
+                const timeColumn = columns.find((column) => column.toLowerCase() === 'time');
+                const rainfallColumn = columns.find((column) => column.toLowerCase() === 'rainfall');
+                const locationColumn = columns.find((column) => column.toLowerCase() === 'location');
+
+                if (!timeColumn || !rainfallColumn || !locationColumn) {
+                    return;
+                }
+
+                const allTimes = new Set();
+                const groupedByLocation = {};
+
+                for (const row of rowsToPlot) {
+                    const location = row[locationColumn];
+                    const time = row[timeColumn];
+                    const rainfallValue = Number(row[rainfallColumn]);
+
+                    if (!location || !time || Number.isNaN(rainfallValue)) {
+                        continue;
+                    }
+
+                    allTimes.add(time);
+                    if (!groupedByLocation[location]) {
+                        groupedByLocation[location] = {};
+                    }
+
+                    groupedByLocation[location][time] = rainfallValue;
+                }
+
+                const labels = Array.from(allTimes).sort();
+                const datasets = Object.entries(groupedByLocation).map(([location, rainfallByTime]) => ({
+                    label: location,
+                    data: labels.map((time) => (time in rainfallByTime ? rainfallByTime[time] : null)),
+                    borderWidth: 2,
+                    tension: 0.2,
+                    spanGaps: true
+                }));
+
+                if (rainfallChart) {
+                    rainfallChart.destroy();
+                    rainfallChart = null;
+                }
+
+                if (!labels.length || !datasets.length) {
+                    plotGraphCanvas.style.display = 'none';
+                    return;
+                }
+
+                plotGraphCanvas.style.display = 'block';
+
+                rainfallChart = new Chart(plotGraphCanvas, {
+                    type: 'line',
+                    data: {
+                        labels,
+                        datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Time'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Rainfall'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function updateMapToCoordinates(latitude, longitude) {
+                if (!mapFrameElement) {
+                    return;
+                }
+
+                mapFrameElement.src = `https://maps.google.com/maps?width=600&height=400&hl=en&q=${encodeURIComponent(`${latitude},${longitude}`)}&t=&z=14&ie=UTF8&iwloc=B&output=embed`;
+            }
+
+            function moveMapToLocation(locationValue) {
+                if (!locationValue) {
+                    return;
+                }
+
+                const coordinates = latitudeAndLongitude[locationValue] || locationLookup[String(locationValue).toLowerCase()];
+                if (!coordinates || coordinates.length < 2) {
+                    return;
+                }
+
+                updateMapToCoordinates(coordinates[0], coordinates[1]);
+            }
 
 
 
@@ -83,10 +233,34 @@
                 rowData,
                 // Column Definitions: Defines the columns to be displayed.
                 columnDefs,
-                defaultColDef
+                defaultColDef,
+                onFilterChanged: (params) => {
+                    const filteredRows = [];
+                    params.api.forEachNodeAfterFilterAndSort((node) => {
+                        if (node.data) {
+                            filteredRows.push(node.data);
+                        }
+                    });
+
+                    renderRainfallChart(filteredRows);
+                },
+                onCellClicked: (params) => {
+                    if (!params.colDef?.field || params.colDef.field.toLowerCase() !== 'location') {
+                        return;
+                    }
+
+                    moveMapToLocation(params.value);
+                }
             };
 
-            agGrid.createGrid(myGridElement, gridOptions);
+            const gridApi = agGrid.createGrid(myGridElement, gridOptions);
+            const initialRows = [];
+            gridApi.forEachNodeAfterFilterAndSort((node) => {
+                if (node.data) {
+                    initialRows.push(node.data);
+                }
+            });
+            renderRainfallChart(initialRows);
 
     </script>
 

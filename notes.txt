@@ -1,20 +1,42 @@
 
 to do 
 
-1) get git repo up 
+1) get git repo up (check)
 
-2) get website working propper through domain 
+2) get website working propper through domain (check)
 
 3) get db working 
 
+
+tables: 
+
+rainfall 
+rainguage
+logs
+users
+
+
 4) get to get data from db
 
+5) map (check)
 
+6) multiple locations with map click on data to move map (check)
 
+7) graphs plotting data (check)
 
+8) other pages 
 
+9) logging in system 
 
+10) 
 
+11 ) pretty up 
+
+11i) other svgs 
+
+11ii) title at top of page for rainfall report 
+
+12) pretty up code and fully understand every bit 
 
 
 

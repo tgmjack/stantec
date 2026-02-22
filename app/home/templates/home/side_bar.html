@@ -12,301 +12,118 @@
 <link rel="stylesheet" href="{% static 'css/accordion.css' %}?v=6">
 
 
-<button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-   <span class="sr-only">Open sidebar</span>
-   <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-   <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-   </svg>
-</button>
 
-<aside id="default-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+
+<aside id="default-sidebar" class="fixed top-0 left-0 z-40 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar" style="width: 15%;">
     <div class="h-full px-3 py-4 flex flex-col bg-gray-50 dark:bg-gray-800">
 
-        
-        <!-- Droplist button -->
-        <div class="relative w-full text-left mx-auto">
-            <div>
-                <button
-                type="button"
-                class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50"
-                id="menu-button"
-                aria-expanded="false"
-                aria-haspopup="true"
-                onclick="document.getElementById('dropdown-menu').classList.toggle('hidden')"
-                >
-
-                    <div class="p-1 rounded" style="background-color: #f5a22e">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke="white" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gallery-vertical-end size-4 mt-2">
-                            <path d="M7 2h10"></path>
-                            <path d="M5 6h14"></path>
-                            <rect width="18" height="12" x="3" y="10" rx="2"></rect>
-                        </svg>
-                    </div>
-
-                    <div>
-                        <p class="text-sm" style="text-align: left; white-space: nowrap; overflow: hidden; text-overflow: clip;">
-                        {{organization.name}}
-                        </p>
-                        <p class="text-xs" style="text-align: left; white-space: nowrap; overflow: hidden; text-overflow: clip;">   
-                        {{organization.team}}
-                        </p>
-                    </div>
-
-                    &nbsp;
-
-                    <svg class="-mr-1 size-5 text-gray-400 mt-2" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                    </svg>
-
-                </button>
-            </div>
-            <!-- Dropdown menu -->
-            <div id="dropdown-menu" class="hidden absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                <div class="py-1" role="none">
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Account settings</a>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Support</a>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">License</a>
-                <form method="POST" action="#" role="none">
-                    <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</button>
-                </form>
-                </div>
-            </div>
+        <div class="mb-3 d-flex justify-content-center">
+            <img src="{% static 'stantec_logo.png' %}" alt="Stantec logo" style="max-width: 100%; height: auto; max-height: 48px;">
         </div>
 
+        
+        
         <div class="mt-auto">
-            <p class="text-xs">Platform</p>
+            <p class="text-xs">controls</p>
 
-        <button class="accordion">
-            <div class="row">
-                <div class="col-md-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-                        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
-                    </svg>
-                </div>
-                <div class="col-md-6"> Overview </div>
-                <div class="col-md-2"></div>
-                <div class="col-md-1 arrow">></div>
-                <div class="col-md-1"></div>
-            </div>
-        </button>
-        <div class="panel">
-            <p class="panel_text"> <a href="main_landing_page"> Dashboard </a> </p>
-        </div>
-
-
-
-
-        <button class="accordion">
-            <div class="row">
-                <div class="col-md-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-combine group-data-[state=collapsed]:hidden">
-                        <path d="M10 18H5a3 3 0 0 1-3-3v-1"></path>
-                        <path d="M14 2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2"></path>
-                        <path d="M20 2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2"></path>
-                        <path d="m7 21 3-3-3-3"></path>
-                        <rect x="14" y="14" width="8" height="8" rx="2"></rect>
-                        <rect x="2" y="2" width="8" height="8" rx="2"></rect>
-                    </svg>
-                </div>
-                <div class="col-md-6"> Matching </div>
-                <div class="col-md-2"></div>
-                <div class="col-md-1 arrow">></div>
-                <div class="col-md-1"></div>
-            </div>
-        </button>
-        <div class="panel">
-            <p class="panel_text"><a href="advanced_matching_page"> Advanced Matching </a></p>
-        </div>
-
-        
-        <button class="accordion">
-            <div class="row">
-                <div class="col-md-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-table" viewBox="0 0 16 16">
-                        <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z"/>
-                    </svg>
-                </div>
-                <div class="col-md-6"> Report Centre </div>
-                <div class="col-md-2"></div>
-                <div class="col-md-1 arrow">></div>
-                <div class="col-md-1"></div>
-            </div>
-        </button>
-        <div class="panel">
-            <p class="panel_text"><a href="head_to_head"> Head To Head </a></p>
-            <p class="panel_text"><a href="price_index_report"> Price Index Report </a></p>
-            <p class="panel_text"><a href="price_movement_page"> Price Movement </a></p>
-            <p class="panel_text"><a href="price_suggestion_table_page"> Price Suggestion </a></p>
-            <p class="panel_text"><a href="custom_graph_builder"> Custom Graph Builder </a></p>
-            <p class="panel_text"><a href="management_reports_page"> Management Reports </a></p>
-        </div>
-        
-
-        <button class="accordion">
-            <div class="row">
-                <div class="col-md-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
-                        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
-                        <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
-                    </svg>
-                </div>
-                <div class="col-md-6"> Maintenance </div>
-                <div class="col-md-2"></div>
-                <div class="col-md-1 arrow">></div>
-                <div class="col-md-1"></div>
-            </div>
-        </button>
-        <div class="panel">
-            <p class="panel_text"><a href="tags_page"> Tags </a></p>
-            <p class="panel_text"><a href="scraped_data_that_needs_skus" disabled> Missing Sku Manager </a></p>
-        </div>
-
-        
-        <button class="accordion">
-            <div class="row">
-                <div class="col-md-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16">
-                        <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
-                        <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
-                    </svg>
-                </div>
-                <div class="col-md-6"> Price Automation Centre </div>
-                <div class="col-md-2"></div>
-                <div class="col-md-1 arrow">></div>
-                <div class="col-md-1"></div>
-            </div>
-        </button>
-        <div class="panel">
-        
-            <p class="panel_text"><a href="automation_rules"> Price Automation </a></p>
-            <p class="panel_text"><a href="soa_manager"> SOA </a></p>
-        
-        </div>
-
-
-
-            {% if "@encircle-marketing" in user.email %}
-                <button class="accordion">
+            <button class="accordion">
                 <div class="row">
                     <div class="col-md-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-briefcase" viewBox="0 0 16 16">
-                            <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5m1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0M1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
                         </svg>
                     </div>
-                    <div class="col-md-6"> Admin Stuff </div>
+                    <div class="col-md-6"> Pages </div>
                     <div class="col-md-2"></div>
                     <div class="col-md-1 arrow">></div>
                     <div class="col-md-1"></div>
                 </div>
             </button>
+
             <div class="panel">
-             
-                <p class="panel_text"><a href="admin_page"> Admin Page </a></p>
-                
-                <p class="panel_text"><a href="missing_halfords_products" disabled> Missing Halfords Products ( coming soon ) </a></p>
-
-
-            </div>
-        {% endif %}
-
-
-
-        <script>
-            var acc = document.getElementsByClassName("accordion");
-            var i;
-
-            for (i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var panel = this.nextElementSibling;
-
-                var arrowCol = this.querySelector(".arrow");
-                if (!arrowCol) {
-                    console.warn("Arrow element not found");
-                    return;
-                }
-
-                // Toggle arrow symbol
-                if (arrowCol.textContent.trim() === ">") {
-                    arrowCol.textContent = "v";
-                } else if (arrowCol.textContent.trim() === "v") {
-                    arrowCol.textContent = ">";
-                } else {
-                    console.log("Unexpected arrow value:", arrowCol.textContent);
-                }
-
-
-                if (panel.style.maxHeight) {
-                panel.style.maxHeight = null;
-                } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
-                } 
-            });
-            }
-        </script>
-
-
-
-
-
-
-
-
-        <!-- Droplist button -->
-        <div class="relative w-full text-left mx-auto">
-            <div>
-                <button
-                    type="button"
-                    class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50"
-                    id="menu-button-2"
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    onclick="document.getElementById('dropdown-menu-2').classList.toggle('hidden')"
-                >
-                    <div class="p-1 rounded" style="background-color: #f9fafb">
-                        <span>{{user.initials}}</span>
-                    </div>
-
-                    <div>
-                        <p class="text-sm"  style="text-align: left; white-space: nowrap; overflow: hidden; text-overflow: clip;">{{user.name}}</p>
-                        <p class="text-xs"  style="text-align: left; white-space: nowrap; overflow: hidden; text-overflow: clip;">{{user.email}}</p>
-                    </div>
-
-                    &nbsp;
-
-                    <svg class="-mr-1 size-5 text-gray-400 mt-2" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                    </svg>
-                </button>
+                <p class="panel_text"> <a href=""> RainFall Report </a> </p>
             </div>
 
-            <!-- Dropdown menu (sideways)
-             right-full mr-2  -->
-            <div id="dropdown-menu-2" class="hidden absolute bottom-0 left-full ml-2 z-10 w-56 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black/5" role="menu" aria-orientation="vertical" aria-labelledby="menu-button-2" tabindex="-1">
-                <div class="py-1" role="none">
-                    <div id = "user info section">
-                        <div class="p-1 rounded" style="background-color: #f9fafb">
-                            <span>{{user.initials}}</span>
-                        </div>
 
-                        <div>
-                            <p class="text-sm" style="text-align: left; white-space: nowrap; overflow: hidden; text-overflow: clip;">{{user.name}}</p>
-                            <p class="text-xs" style="text-align: left; white-space: nowrap; overflow: hidden; text-overflow: clip;">{{user.email}}</p>
-                        </div>
+
+
+
+            <button class="accordion">
+                <div class="row">
+                    <div class="col-md-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+                        </svg>
                     </div>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Account </a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Support</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Notifications</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Theme</a>
-                    <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Logout</a>
-                    <form method="GET" action="/logout">
-                        <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</button>
-                    </form>
+                    <div class="col-md-6"> Other </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-1 arrow">></div>
+                    <div class="col-md-1"></div>
                 </div>
+            </button>
+
+            <div class="panel">
+                <p class="panel_text"> <a href=""> About </a> </p>
             </div>
+
+
+
+            <button class="accordion">
+                <div class="row">
+                    <div class="col-md-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+                        </svg>
+                    </div>
+                    <div class="col-md-6"> Admin </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-1 arrow">></div>
+                    <div class="col-md-1"></div>
+                </div>
+            </button>
+
+            <div class="panel">
+                <p class="panel_text"> <a href=""> Admin stuff </a> </p>
+            </div>
+
+
+
         </div>
-
-
     </div>
 </aside>
 
+
+
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+
+        var arrowCol = this.querySelector(".arrow");
+        if (!arrowCol) {
+            console.warn("Arrow element not found");
+            return;
+        }
+
+        // Toggle arrow symbol
+        if (arrowCol.textContent.trim() === ">") {
+            arrowCol.textContent = "v";
+        } else if (arrowCol.textContent.trim() === "v") {
+            arrowCol.textContent = ">";
+        } else {
+            console.log("Unexpected arrow value:", arrowCol.textContent);
+        }
+
+
+        if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+        } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+        } 
+    });
+    }
+</script>

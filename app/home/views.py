@@ -4,12 +4,24 @@ from pathlib import Path
 # Create your views here.
 
 
+def seperate_latitude_and_logitude_from_rest_of_df(df):
+    
+    latitude_and_longitude = {}
+    for unique_value in df["location"].unique():
+        latitude = df[df["location"] == unique_value]["latitude"].iloc[0]
+        longitude = df[df["location"] == unique_value]["longitude"].iloc[0]
+        latitude_and_longitude[unique_value] = (latitude, longitude)
+    data_to_display = df.drop(columns=["latitude", "longitude"])
+
+    return latitude_and_longitude, data_to_display
+    
 
 def use_local_data():
     import pandas as pd
-    data_file = Path(stg.BASE_DIR) / 'home' / 'static' / 'Data.xlsx'
+    data_file = Path(stg.BASE_DIR) / 'home' / 'static' / 'Data2.xlsx'
     df = pd.read_excel(data_file)
-    return df.columns, df.values.tolist()
+    latitude_and_longitude, data_to_display = seperate_latitude_and_logitude_from_rest_of_df(df)
+    return latitude_and_longitude, data_to_display
 
 def get_data_from_local_sqlite_db():
     import sqlite3
@@ -31,19 +43,19 @@ def get_data_from_postgres():
 
 def get_data():
     if stg.TESTING:
-        columns, rows = use_local_data()
+        latitude_and_longitude, data_to_display = use_local_data()
     elif stg.USE_LOCAL_SQLITE_DB:
-        columns, rows = get_data_from_local_sqlite_db()
+        latitude_and_longitude, data_to_display = get_data_from_local_sqlite_db()
     elif stg.USE_POSTGRES_DB:
-        columns, rows = get_data_from_postgres()
+        latitude_and_longitude, data_to_display = get_data_from_postgres()
     else:
         raise Exception("no data chosen")
 
-    columns = list(columns)
+    columns = list(data_to_display.columns)
     normalized_rows = []
     cell_data = []
 
-    for row in rows:
+    for row in data_to_display.itertuples(index=False):
         if isinstance(row, dict):
             ordered_row = [row.get(column) for column in columns]
             row_object = {column: row.get(column) for column in columns}
@@ -57,16 +69,13 @@ def get_data():
         normalized_rows.append(ordered_row)
         cell_data.append(row_object)
 
-# so its like this 
-#    { make: "Tesla", model: "Model Y", price: 64950, electric: true },
- #   { make: "Ford", model: "F-Series", price: 33850, electric: false },
-  #  { make: "Toyota", model: "Corolla", price: 29600, electric: false },
-    return columns, normalized_rows, cell_data
+
+    return columns, normalized_rows, cell_data , latitude_and_longitude
 
 
 def display_page(request):
 
-    columns, rows, cell_data = get_data()
+    columns, rows, cell_data , latitude_and_longitude = get_data()
     
     title = 'think of a clever title'
     type_of_table_to_display = request.GET.get('type_of_table_to_display')
@@ -76,12 +85,24 @@ def display_page(request):
     print(columns)
     print(len(rows))
 
+    
+
+    default_latitude = None
+    default_longitude = None
+    if latitude_and_longitude:
+        first_latitude, first_longitude = next(iter(latitude_and_longitude.values()))
+        default_latitude = first_latitude
+        default_longitude = first_longitude
+
     context = {
         'title': title,
         'columns': columns,
         'rows': rows,
         'cell_data': cell_data,
-        'type_of_table_to_display': type_of_table_to_display
+        'type_of_table_to_display': type_of_table_to_display,
+        'latitude_and_longitude': latitude_and_longitude,
+        'default_latitude': default_latitude,
+        'default_longitude': default_longitude
     }
 
     return render(request, 'home/index2.html' , context)
