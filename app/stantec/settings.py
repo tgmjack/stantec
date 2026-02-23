@@ -22,7 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'mi_secret_init_m8'
 
 
-TESTING = True
+TESTING = False
+USE_POSTGRES_DB = True
+USE_LOCAL_SQLITE_DB = False
+
+
 DEBUG = True
 
 ALLOWED_HOSTS = ["stantec.tgmjack.com" , "localhost" , "127.0.0.1"]

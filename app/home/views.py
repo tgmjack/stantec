@@ -34,10 +34,58 @@ def get_data_from_local_sqlite_db():
     return columns, rows
 
 def get_data_from_postgres():
+    import os
+    import pandas as pd
+    import psycopg2
 
-    columns = None
-    rows = None
-    return columns, rows
+    connection = psycopg2.connect(
+        host=getattr(stg, "DB_HOST", os.getenv("DB_HOST")),
+        port=getattr(stg, "DB_PORT", os.getenv("DB_PORT")),
+        dbname=getattr(stg, "DB_NAME", os.getenv("DB_NAME")),
+        user=getattr(stg, "DB_USER", os.getenv("DB_USER")),
+        password=getattr(stg, "DB_PASSWORD", os.getenv("DB_PASSWORD")),
+    )
+
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT EXISTS (
+                    SELECT 1
+                    FROM information_schema.columns
+                    WHERE table_schema = 'public'
+                      AND table_name = 'rainfall'
+                      AND column_name = 'time'
+                )
+                """
+            )
+            has_time_column = cursor.fetchone()[0]
+
+            if has_time_column:
+                cursor.execute(
+                    """
+                    SELECT rf.time, rf.rainfall AS \"Rainfall\", rg.location, rg.latitude, rg.longitude
+                    FROM rainfall rf
+                    JOIN rainguage rg ON rg.id = rf.rainguage_id
+                    ORDER BY rf.id
+                    """
+                )
+                rows = cursor.fetchall()
+                df = pd.DataFrame(rows, columns=["time", "Rainfall", "location", "latitude", "longitude"])
+            else:
+                cursor.execute(
+                    """
+                    SELECT rf.rainfall AS \"Rainfall\", rg.location, rg.latitude, rg.longitude
+                    FROM rainfall rf
+                    JOIN rainguage rg ON rg.id = rf.rainguage_id
+                    ORDER BY rf.id
+                    """
+                )
+                rows = cursor.fetchall()
+                df = pd.DataFrame(rows, columns=["Rainfall", "location", "latitude", "longitude"])
+
+    latitude_and_longitude, data_to_display = seperate_latitude_and_logitude_from_rest_of_df(df)
+    return latitude_and_longitude, data_to_display
 
 
 
