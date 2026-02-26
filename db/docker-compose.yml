@@ -16,6 +16,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - stantec_net
 
 volumes:
   postgres_data:
+
+networks:
+  stantec_net:
+    name: stantec_net

@@ -8,6 +8,13 @@ services:
     environment:
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
       - DJANGO_ALLOWED_HOSTS=${DOMAIN}
+      - DB_HOST=${DB_HOST:-postgres}
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_NAME=${DB_NAME:-stantec_db}
+      - DB_USER=${DB_USER:-stantec_user}
+      - DB_PASSWORD=${DB_PASSWORD:-stantec_password}
+    networks:
+      - stantec_net
 
   proxy:
     build:
@@ -24,6 +31,8 @@ services:
       - certbot-certs:/etc/letsencrypt
     environment:
       - DOMAIN=${DOMAIN}
+    networks:
+      - stantec_net
 
   certbot:
     build:
@@ -37,8 +46,14 @@ services:
       - certbot-certs:/etc/letsencrypt/
     depends_on:
       - proxy
+    networks:
+      - stantec_net
 
 volumes:
   certbot-web:
   proxy-dhparams:
   certbot-certs:
+
+networks:
+  stantec_net:
+    name: stantec_net

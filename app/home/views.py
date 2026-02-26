@@ -16,6 +16,24 @@ if sys.platform.startswith("linux") and env_path.exists():
 # Create your views here.
 
 
+def get_db_connection():
+    import psycopg2
+
+    host = getattr(stg, "DB_HOST", None) or os.getenv("DB_HOST") or "postgres"
+    port = getattr(stg, "DB_PORT", None) or os.getenv("DB_PORT") or "5432"
+    dbname = getattr(stg, "DB_NAME", None) or os.getenv("DB_NAME") or "stantec_db"
+    user = getattr(stg, "DB_USER", None) or os.getenv("DB_USER") or "stantec_user"
+    password = getattr(stg, "DB_PASSWORD", None) or os.getenv("DB_PASSWORD") or "stantec_password"
+
+    return psycopg2.connect(
+        host=host,
+        port=port,
+        dbname=dbname,
+        user=user,
+        password=password,
+    )
+
+
 def seperate_latitude_and_logitude_from_rest_of_df(df):
     
     latitude_and_longitude = {}
@@ -50,13 +68,7 @@ def create_new_user(email_address, password , registered, registration_code):
     import pandas as pd
     import psycopg2
 
-    connection = psycopg2.connect(
-        host=getattr(stg, "DB_HOST", os.getenv("DB_HOST")),
-        port=getattr(stg, "DB_PORT", os.getenv("DB_PORT")),
-        dbname=getattr(stg, "DB_NAME", os.getenv("DB_NAME")),
-        user=getattr(stg, "DB_USER", os.getenv("DB_USER")),
-        password=getattr(stg, "DB_PASSWORD", os.getenv("DB_PASSWORD")),
-    )
+    connection = get_db_connection()
 
     print(" qwertyu")
     print(email_address, password , registered, registration_code)
@@ -77,13 +89,7 @@ def get_data_from_postgres():
     import pandas as pd
     import psycopg2
 
-    connection = psycopg2.connect(
-        host=getattr(stg, "DB_HOST", os.getenv("DB_HOST")),
-        port=getattr(stg, "DB_PORT", os.getenv("DB_PORT")),
-        dbname=getattr(stg, "DB_NAME", os.getenv("DB_NAME")),
-        user=getattr(stg, "DB_USER", os.getenv("DB_USER")),
-        password=getattr(stg, "DB_PASSWORD", os.getenv("DB_PASSWORD")),
-    )
+    connection = get_db_connection()
 
     with connection:
         with connection.cursor() as cursor:
@@ -167,13 +173,7 @@ def get_user_data():
     import pandas as pd
     import psycopg2
 
-    connection = psycopg2.connect(
-        host=getattr(stg, "DB_HOST", os.getenv("DB_HOST")),
-        port=getattr(stg, "DB_PORT", os.getenv("DB_PORT")),
-        dbname=getattr(stg, "DB_NAME", os.getenv("DB_NAME")),
-        user=getattr(stg, "DB_USER", os.getenv("DB_USER")),
-        password=getattr(stg, "DB_PASSWORD", os.getenv("DB_PASSWORD")),
-    )
+    connection = get_db_connection()
 
     with connection:
         with connection.cursor() as cursor:
@@ -196,13 +196,7 @@ def get_logs():
     import psycopg2
 
 
-    connection = psycopg2.connect(
-        host=getattr(stg, "DB_HOST", os.getenv("DB_HOST")),
-        port=getattr(stg, "DB_PORT", os.getenv("DB_PORT")),
-        dbname=getattr(stg, "DB_NAME", os.getenv("DB_NAME")),
-        user=getattr(stg, "DB_USER", os.getenv("DB_USER")),
-        password=getattr(stg, "DB_PASSWORD", os.getenv("DB_PASSWORD")),
-    )
+    connection = get_db_connection()
 
     with connection:
         with connection.cursor() as cursor:
@@ -259,13 +253,7 @@ def create_new_log(user, log_type, log_message):
     import psycopg2
 
     query = """ insert into logs (time, user_email, log_type, log_message) values (CURRENT_TIMESTAMP, %s, %s, %s) """
-    connection = psycopg2.connect(
-        host=getattr(stg, "DB_HOST", os.getenv("DB_HOST")),
-        port=getattr(stg, "DB_PORT", os.getenv("DB_PORT")),
-        dbname=getattr(stg, "DB_NAME", os.getenv("DB_NAME")),
-        user=getattr(stg, "DB_USER", os.getenv("DB_USER")),
-        password=getattr(stg, "DB_PASSWORD", os.getenv("DB_PASSWORD")),
-    )
+    connection = get_db_connection()
 
     with connection:
         with connection.cursor() as cursor:
@@ -362,13 +350,7 @@ def set_registered_to_true_for_this_user(email_address):
     import pandas as pd
     import psycopg2
 
-    connection = psycopg2.connect(
-        host=getattr(stg, "DB_HOST", os.getenv("DB_HOST")),
-        database=getattr(stg, "DB_NAME", os.getenv("DB_NAME")),
-        user=getattr(stg, "DB_USER", os.getenv("DB_USER")),
-        password=getattr(stg, "DB_PASSWORD", os.getenv("DB_PASSWORD")),
-        port=getattr(stg, "DB_PORT", os.getenv("DB_PORT", 5432))
-    )
+    connection = get_db_connection()
 
     cursor = connection.cursor()
 
