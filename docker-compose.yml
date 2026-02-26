@@ -8,7 +8,7 @@ services:
     environment:
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
       - DJANGO_ALLOWED_HOSTS=${DOMAIN}
-      - DB_HOST=${DB_HOST:-postgres}
+      - DB_HOST=postgres
       - DB_PORT=${DB_PORT:-5432}
       - DB_NAME=${DB_NAME:-stantec_db}
       - DB_USER=${DB_USER:-stantec_user}

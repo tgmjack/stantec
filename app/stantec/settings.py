@@ -87,13 +87,17 @@ WSGI_APPLICATION = 'stantec.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 if USE_POSTGRES_DB:
+    db_host = os.getenv('DB_HOST', 'postgres')
+    if os.path.exists('/.dockerenv') and str(db_host).strip().lower() in {'localhost', '127.0.0.1', '::1'}:
+        db_host = 'postgres'
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': os.getenv('DB_NAME', 'stantec_db'),
             'USER': os.getenv('DB_USER', 'stantec_user'),
             'PASSWORD': os.getenv('DB_PASSWORD', 'stantec_password'),
-            'HOST': os.getenv('DB_HOST', 'postgres'),
+            'HOST': db_host,
             'PORT': os.getenv('DB_PORT', '5432'),
         }
     }
