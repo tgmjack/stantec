@@ -1,11 +1,18 @@
 import os
-
+import sys
 from django.shortcuts import render , redirect
 from stantec import settings as stg
 from pathlib import Path
 import ssl
 import bcrypt
 from email.message import EmailMessage
+from dotenv import load_dotenv
+
+
+
+env_path = Path(__file__).resolve().parent.parent / '.env'
+if sys.platform.startswith("linux") and env_path.exists():
+    load_dotenv(env_path)
 # Create your views here.
 
 
