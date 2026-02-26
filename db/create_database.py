@@ -1,8 +1,13 @@
 import os
 import sys
-
+from pathlib import Path
+from dotenv import load_dotenv
 import psycopg2
 
+
+env_path = Path(__file__).resolve().parent.parent / '.env'
+if sys.platform.startswith("linux") and env_path.exists():
+    load_dotenv(env_path)
 
 def get_connection():
     return psycopg2.connect(

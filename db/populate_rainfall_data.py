@@ -10,6 +10,9 @@ from psycopg2.extras import execute_values
 from create_database import get_connection
 
 
+
+
+
 def default_csv_path() -> Path:
     return Path(__file__).resolve().parents[1] / "app" / "home" / "static" / "Data2.csv"
 
