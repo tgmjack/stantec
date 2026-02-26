@@ -19,11 +19,14 @@ if sys.platform.startswith("linux") and env_path.exists():
 def get_db_connection():
     import psycopg2
 
-    host = getattr(stg, "DB_HOST", None) or os.getenv("DB_HOST") or "postgres"
+    host = os.getenv("DB_HOST") or getattr(stg, "DB_HOST", None) or "postgres"
     port = getattr(stg, "DB_PORT", None) or os.getenv("DB_PORT") or "5432"
     dbname = getattr(stg, "DB_NAME", None) or os.getenv("DB_NAME") or "stantec_db"
     user = getattr(stg, "DB_USER", None) or os.getenv("DB_USER") or "stantec_user"
     password = getattr(stg, "DB_PASSWORD", None) or os.getenv("DB_PASSWORD") or "stantec_password"
+
+    if os.path.exists("/.dockerenv") and str(host).strip().lower() in {"localhost", "127.0.0.1", "::1"}:
+        host = "postgres"
 
     return psycopg2.connect(
         host=host,
