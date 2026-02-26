@@ -10,8 +10,8 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css">
 
-        <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script> 
-        <!-- <script src="https://cdn.jsdelivr.net/npm/ag-grid-enterprise@35.1.0/dist/ag-grid-enterprise.min.js"></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/ag-grid-enterprise@35.1.0/dist/ag-grid-enterprise.min.js"></script>
     </head>
 
 
@@ -79,6 +79,7 @@
     {{ cell_data|json_script:"row-data" }}
     {{ columns|json_script:"columns-data" }}
     {{ latitude_and_longitude|json_script:"latitude-and-longitude-data" }}
+    {{ ag_grid_enterprise_key|json_script:"ag-grid-enterprise-key" }}
 
     <script>
 
@@ -88,6 +89,15 @@
             const plotGraphLoadingElement = document.getElementById('plot_graph_loading');
 
             const fullRowData = JSON.parse(document.getElementById('row-data').textContent);
+            const agGridEnterpriseKeyElement = document.getElementById('ag-grid-enterprise-key');
+            const agGridEnterpriseKey = agGridEnterpriseKeyElement
+                ? JSON.parse(agGridEnterpriseKeyElement.textContent)
+                : '';
+
+            if (agGridEnterpriseKey && window.agGrid && agGrid.LicenseManager) {
+                agGrid.LicenseManager.setLicenseKey(agGridEnterpriseKey);
+            }
+
             const INITIAL_ROW_COUNT = 500;
             const initialRowData = Array.isArray(fullRowData) ? fullRowData.slice(0, INITIAL_ROW_COUNT) : [];
             const remainingRowData = Array.isArray(fullRowData) ? fullRowData.slice(INITIAL_ROW_COUNT) : [];

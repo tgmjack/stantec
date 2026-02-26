@@ -508,7 +508,8 @@ def display_page(request , alert = None):
 #        'type_of_table_to_display': type_of_table_to_display,
         'latitude_and_longitude': latitude_and_longitude,
         'default_latitude': default_latitude,
-        'default_longitude': default_longitude
+        'default_longitude': default_longitude,
+        'ag_grid_enterprise_key': getattr(stg, 'AG_GRID_ENTERPRISE_KEY', '')
     }
     if alert is not None:
         context['alert'] = alert
