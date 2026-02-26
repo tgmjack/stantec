@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 
@@ -30,6 +31,14 @@ USE_LOCAL_SQLITE_DB = False
 DEBUG = True
 
 ALLOWED_HOSTS = ["stantec.tgmjack.com" , "localhost" , "127.0.0.1"]
+
+domain = os.getenv("DOMAIN", "stantec.tgmjack.com").strip()
+CSRF_TRUSTED_ORIGINS = [
+    f"https://{domain}",
+    f"http://{domain}",
+    "http://localhost",
+    "http://127.0.0.1",
+]
 
 
 # Application definition
