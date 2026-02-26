@@ -26,17 +26,47 @@ users
 
 8) other pages 
 
+8a) about us page 
+
+8b) admin stuff page 
+
 9) logging in system 
 
 10) 
 
 11 ) pretty up 
 
-11i) other svgs 
+11i) other svgs for side bar 
 
-11ii) title at top of page for rainfall report 
+11ii) title at top of each page 
+
+111iii) arangement of elements in report 
 
 12) pretty up code and fully understand every bit 
+
+13) move template files to templates instead of templates/home
+
+14) alpha stantec logo 
+
+15) make registration work 
+
+16) make login work 
+
+17) make work with propper models system 
+
+18) tests (both django and selenium )
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

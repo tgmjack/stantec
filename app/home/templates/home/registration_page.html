@@ -1,0 +1,45 @@
+{% load static %}
+{% csrf_token %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login Page</title>
+   
+    <link rel="stylesheet" href="{% static 'css/login_and_registration.css' %}?v=6">
+   
+  
+</head>
+<body>
+
+  {% include "home/alert_handler.html" %}
+  <div class="login-and-registration-container">
+        <h3> signup </h3>
+        <form  action="/attempt_to_register_new_user">
+            <br>
+            <label for="email">Email:</label>    
+            <input type="text" name="email" id="email">
+            <br>
+            <label for="Password">Password:</label>    
+            <input type="text" name="Password" id="Password">
+            <br>
+            <button type="submit"> register</button>
+        </form>
+  </div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
