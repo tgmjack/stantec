@@ -52,7 +52,7 @@ def seperate_latitude_and_logitude_from_rest_of_df(df):
 def use_local_data():
     import pandas as pd
     data_file = Path(stg.BASE_DIR) / 'home' / 'static' / 'Data2.csv'
-    df = pd.read_excel(data_file)
+    df = pd.read_csv(data_file)
     latitude_and_longitude, data_to_display = seperate_latitude_and_logitude_from_rest_of_df(df)
     return latitude_and_longitude, data_to_display
 
