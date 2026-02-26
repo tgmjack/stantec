@@ -371,6 +371,40 @@ def set_registered_to_true_for_this_user(email_address):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             
 
 
@@ -421,7 +455,8 @@ def enter_registration_code_page(request):
 
 
 def registration_page(request):
-    context = {}
+    alert = request.GET.get('alert', '')
+    context = {'alert': alert}
     return render(request, 'home/registration_page.html' , context)
 
 def logout(request):
