@@ -4,6 +4,9 @@ services:
   app:
     build:
       context: .
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+      uwsgi --socket :9000 --workers 4 --master --enable-threads --module stantec.wsgi"
     restart: always
     environment:
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
