@@ -12,6 +12,19 @@
 
         <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/ag-grid-enterprise@35.1.0/dist/ag-grid-enterprise.min.js"></script>
+
+        <style>
+            .ag-theme-alpine .ag-menu,
+            .ag-theme-alpine .ag-filter,
+            .ag-theme-alpine .ag-set-filter-list,
+            .ag-theme-alpine .ag-virtual-list-container,
+            .ag-theme-alpine .ag-mini-filter,
+            .ag-theme-alpine .ag-picker-field-wrapper,
+            .ag-theme-alpine .ag-input-field-input {
+                background-color: #ffffff !important;
+                opacity: 1 !important;
+            }
+        </style>
     </head>
 
 
@@ -20,7 +33,9 @@
         {% include "home/side_bar.html" %}  
 
         <div class="main-content" style="margin-left: 15%;">
-            <h1 class="text-center mt-4 mb-4"> RainFall Report </h1>
+            <strong>
+                <h1 class="text-center mt-4 mb-4"> RainFall Report </h1>
+            </strong>
         </div>
 
         <div class="main-content" style="margin-left: 15%; padding: 2%; width: 85%; box-sizing: border-box;">
@@ -111,9 +126,78 @@
                 accumulator[key.toLowerCase()] = value;
                 return accumulator;
             }, {});
+
+            function parseTimeToDate(value) {
+                if (!value) {
+                    return null;
+                }
+
+                const raw = String(value).trim();
+                const nativeParsed = Date.parse(raw);
+                if (!Number.isNaN(nativeParsed)) {
+                    return new Date(nativeParsed);
+                }
+
+                const match = raw.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2})(?::(\d{2}))?)?$/);
+                if (!match) {
+                    return null;
+                }
+
+                const day = Number(match[1]);
+                const monthIndex = Number(match[2]) - 1;
+                const year = Number(match[3]);
+                const hour = Number(match[4] || 0);
+                const minute = Number(match[5] || 0);
+                const second = Number(match[6] || 0);
+                return new Date(year, monthIndex, day, hour, minute, second);
+            }
+
+            function parseTimeValue(value) {
+                const parsedDate = parseTimeToDate(value);
+                return parsedDate ? parsedDate.getTime() : Number.NEGATIVE_INFINITY;
+            }
+
+            function compareTimeValues(valueA, valueB) {
+                return parseTimeValue(valueA) - parseTimeValue(valueB);
+            }
+
             const columnDefs = columns.map((column) => {
                 const isLocationColumn = column.toLowerCase() === 'location';
                 const isRainfallColumn = column.toLowerCase() === 'rainfall';
+                const isTimeColumn = column.toLowerCase() === 'time';
+
+                if (isTimeColumn) {
+                    return {
+                        field: column,
+                        filter: 'agDateColumnFilter',
+                        filterParams: {
+                            browserDatePicker: true,
+                            comparator: (filterLocalDateAtMidnight, cellValue) => {
+                                const parsedDate = parseTimeToDate(cellValue);
+                                if (!parsedDate) {
+                                    return -1;
+                                }
+
+                                const cellDateOnly = new Date(
+                                    parsedDate.getFullYear(),
+                                    parsedDate.getMonth(),
+                                    parsedDate.getDate()
+                                );
+
+                                if (cellDateOnly < filterLocalDateAtMidnight) {
+                                    return -1;
+                                }
+                                if (cellDateOnly > filterLocalDateAtMidnight) {
+                                    return 1;
+                                }
+                                return 0;
+                            }
+                        },
+                        comparator: compareTimeValues,
+                        sort: 'asc'
+                    };
+                }
+
                 if (isLocationColumn) {
                     return {
                         field: column,
@@ -273,7 +357,7 @@
 
             const defaultColDef = {
                 flex: 1,
-                filter: true,
+                filter: 'agTextColumnFilter',
                 editable: true,
             };
 
