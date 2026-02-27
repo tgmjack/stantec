@@ -24,15 +24,16 @@ users
 
 7) graphs plotting data (check)
 
-8) other pages 
+8) other pages  (check)
 
 8a) about us page 
 
-8b) admin stuff page 
 
-9) logging in system 
+8b) admin stuff page  (check)
 
-10) 
+9) logging in system  (check)
+
+
 
 11 ) pretty up 
 
@@ -48,20 +49,23 @@ users
 
 14) alpha stantec logo 
 
-15) make registration work 
+15) make registration work  (check)
 
-16) make login work 
+16) make login work  (check)
 
 17) make work with propper models system 
 
 18) tests (both django and selenium )
 
+19) set filter agSetColumnFilter for location collumn
 
+20) delete notes 
 
+21) make responsive to work on phone
 
+22) add a datapoint for leeds to top of data 
 
-
-
+23) redis to load quicker?
 
 
 

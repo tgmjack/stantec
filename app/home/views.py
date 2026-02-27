@@ -1,55 +1,33 @@
-import os
-import sys
+
 from .data_handler import *
 from stantec import settings as stg
-from pathlib import Path
-
-from dotenv import load_dotenv
-
-
-
-env_path = Path(__file__).resolve().parent.parent / '.env'
-if sys.platform.startswith("linux") and env_path.exists():
-    load_dotenv(env_path)
 
 
 
 
-
+############# registering user functions #############
 def registration_code_entered(request):
-
     registration_code_entered = request.POST.get("registration_code_entered")
-
     existing_users = get_user_data()
-
-    print(request)
-    print(" ############################################################################## ")
-    print("registration_code_entered:", registration_code_entered)
-    print('existing_users["registration_code"]      ' , existing_users["registration_code"])
-
-    user_row = existing_users[existing_users["registration_code"] == registration_code_entered]
-
-    if user_row.empty:
+    user = existing_users.filter(registration_code=registration_code_entered).first()
+    if user is None:
         return redirect('/enter_registration_code_page?alert=invalid+registration+code')
-
-    email_address = user_row["email_address"].iloc[0]
-
+    email_address = user.email_address
     set_registered_to_true_for_this_user(email_address)
-
     return redirect('/login_page?alert=registration+complete+please+log+in')
-
 
 def enter_registration_code_page(request):
     alert = request.GET.get('alert', '')
     context = {'alert': alert}
     return render(request, 'home/enter_registration_code_page.html' , context)
 
-
 def registration_page(request):
     alert = request.GET.get('alert', '')
     context = {'alert': alert}
     return render(request, 'home/registration_page.html' , context)
 
+
+############### log in / log out functions ###############
 def logout(request):
     request.session.flush()
     return redirect('/')
@@ -74,9 +52,9 @@ def login_button_clicked(request):
     else:
         return redirect('/login_page?alert=email+or+password+are+wrong')
 
-    pass
 
 
+##############  main pages  ################
 def display_page(request , alert = None):
 
     user_email = request.session.get('user_email')
@@ -94,9 +72,7 @@ def display_page(request , alert = None):
         'user_email': user_email,
         'title': title,
         'columns': columns,
-#        'rows': rows,
         'cell_data': cell_data,
-#        'type_of_table_to_display': type_of_table_to_display,
         'latitude_and_longitude': latitude_and_longitude,
         'default_latitude': default_latitude,
         'default_longitude': default_longitude,
@@ -120,14 +96,20 @@ def about_us(request):
 def admin_stuff(request):
     user_email = request.session.get('user_email')
     create_new_log(user_email, "admin access", "accessed admin page")
-    logs_df = get_logs()
+    logs = get_logs()
 
-    # Format logs data like cell_data for the table
-    logs_columns = list(logs_df.columns)
+    logs_columns = ["log_id", "time", "user_email", "log_type", "log_message"]
     logs_cell_data = []
-    for index, row in logs_df.iterrows():
-        row_object = {col: row[col] for col in logs_columns}
-        logs_cell_data.append(row_object)
+    for log in logs:
+        logs_cell_data.append(
+            {
+                "log_id": log.log_id,
+                "time": log.time,
+                "user_email": log.user_email,
+                "log_type": log.log_type,
+                "log_message": log.log_message,
+            }
+        )
 
     context = {
         'user_email': user_email,

@@ -1,4 +1,7 @@
+import sys
+
 from django.apps import AppConfig
+from dotenv import load_dotenv
 
 
 class HomeConfig(AppConfig):
@@ -7,4 +10,5 @@ class HomeConfig(AppConfig):
 
     def ready(self):
         pass
+
 
